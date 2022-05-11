@@ -1,11 +1,11 @@
-import NoteItems from "../note-items/note-items";
-import "./notes.scss";
+import NoteItem from "../noteItem/noteItem";
+import "./noteList.scss";
 
-const Notes = ({data, onDelete}) => {
+const NoteList = ({data, onDelete}) => {
     const elements = data.map(item => {
         const {id, ...itemProps} = item;
         return (
-            <NoteItems
+            <NoteItem
                 key={id}
                 {...itemProps}
                 onDelete={() => onDelete(id)}
@@ -20,4 +20,4 @@ const Notes = ({data, onDelete}) => {
     )
 }
 
-export default Notes;
+export default NoteList;
