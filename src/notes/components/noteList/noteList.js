@@ -1,8 +1,8 @@
 import NoteItem from "../noteItem/noteItem";
 import "./noteList.scss";
 
-const NoteList = ({data, onDelete}) => {
-    const elements = data.map(item => {
+const NoteList = ({notes, onDelete}) => {
+    const elements = notes.map(item => {
         const {id, ...itemProps} = item;
         return (
             <NoteItem
@@ -14,7 +14,7 @@ const NoteList = ({data, onDelete}) => {
     })
 
     return (
-        <div className="notes">
+        <div className="notes-wrapper">
             {elements}
         </div>
     )

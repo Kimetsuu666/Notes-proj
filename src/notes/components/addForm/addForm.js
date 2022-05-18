@@ -1,42 +1,28 @@
-import { useState } from "react";
+import {useInputValue} from "../../hooks/hooks";
 import "./addForm.scss"
 
 const AddForm = (props) => {
-    const [title, setTitle] = useState("");
-    const [description, setDescription] = useState("");
-
-    const onChangeTitle = (e) => {
-        setTitle(e.target.value);
-    }
-
-    const onChangeDescription = (e) => {
-        setDescription(e.target.value);
-    }
+    const title = useInputValue("")
+    const description = useInputValue("")
 
     const onSubmit = (e) => {
         e.preventDefault();
-        if (title.length > 3 && description.length > 3) {
-            props.onAdd(title, description)
-            setTitle("");
-            setDescription("");
-        } else {
-            alert ("Invalid data")
-            setTitle("");
-            setDescription("");
-        }
+        props.onAdd(title.value, description.value)
+        title.onClear()
+        description.onClear()
     }
 
         return (
             <div className="add-form-wrapper">
                 <form className="add-form" onSubmit={onSubmit}>
                     <input
-                        onChange={onChangeTitle}
-                        value={title}
+                        onChange={title.onChange}
+                        value={title.value}
                         type="text"
                         placeholder="Title of note"/>
                     <textarea
-                        onChange={onChangeDescription}
-                        value={description}
+                        onChange={description.onChange}
+                        value={description.value}
                         cols="30"
                         rows="10"
                         placeholder="Write description..."/>
