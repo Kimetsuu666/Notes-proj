@@ -1,4 +1,4 @@
-import "./noteItem.scss";
+import "./NoteItem.scss";
 
 
 const NoteItem = (props) => {

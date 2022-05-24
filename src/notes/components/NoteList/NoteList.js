@@ -1,5 +1,5 @@
-import NoteItem from "../noteItem/noteItem";
-import "./noteList.scss";
+import NoteItem from "../NoteItem/NoteItem";
+import "./NoteList.scss";
 
 const NoteList = ({notes, onDelete}) => {
     const elements = notes.map(item => {

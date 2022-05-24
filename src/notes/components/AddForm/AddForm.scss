@@ -28,7 +28,7 @@
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    &:hover {
+    &:hover:not(:disabled) {
       background: #222222;
       color: aliceblue;
       border: 2px solid aliceblue;
@@ -36,6 +36,16 @@
   }
 }
 
+.error {
+  background-color: red;
+  color: black;
+  font-weight: 700;
+  font-size: 16px;
+  width: 80%;
+  margin: 0 auto;
+  padding: 10px;
+  border-radius: 5px;
+}
 
 
 input::-webkit-input-placeholder {
@@ -49,3 +59,4 @@ textarea::-webkit-input-placeholder {
 textarea {
   resize: none;
 }
+

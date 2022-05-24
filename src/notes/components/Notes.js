@@ -1,8 +1,9 @@
 import { useState } from "react";
-import AddForm from "./addForm/addForm";
-import NoteList from "./noteList/noteList";
+import AddForm from "./AddForm/AddForm";
+import NoteList from "./NoteList/NoteList";
+import {generatorId} from "../generatorId/generatorId";
 
-import "./noteWrapper/noteWrapper.scss";
+import "./noteWrapper/NoteWrapper.scss";
 
 const Notes = () => {
     const [notes, setNotes] = useState([]);
@@ -11,7 +12,7 @@ const Notes = () => {
         const newItem = {
             title,
             description,
-            id: Math.floor(Math.random() * (200000 - 100000) + 100000)
+            id: generatorId()
         };
         setNotes(prevNotes => [...prevNotes, newItem])
     }
