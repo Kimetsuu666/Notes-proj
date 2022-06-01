@@ -8,8 +8,8 @@ import "./AddForm.scss";
 function AddForm({ onAdd }) {
   const title = useInputValue("");
   const description = useInputValue("");
-  const [isTitleTouched, setIsTitleTouched] = useState(true);
-  const [isDescriptionTouched, setIsDescriptionTouched] = useState(true);
+  const [isTitleTouched, setIsTitleTouched] = useState(false);
+  const [isDescriptionTouched, setIsDescriptionTouched] = useState(false);
   const titleErrorMessage = useTextValidation(
     title.value,
     validators,
@@ -21,14 +21,16 @@ function AddForm({ onAdd }) {
     isDescriptionTouched
   );
   const [isFormValid, setIsFormValid] = useState(false);
+  const errorTitle = Boolean(titleErrorMessage);
+  const errorDescription = Boolean(descriptionErrorMessage);
 
   useEffect(() => {
-    if (titleErrorMessage || descriptionErrorMessage) {
+    if (errorTitle || errorDescription) {
       setIsFormValid(false);
     } else {
       setIsFormValid(true);
     }
-  }, [titleErrorMessage, descriptionErrorMessage]);
+  }, [errorTitle, errorDescription]);
 
   const clearForm = () => {
     title.onClear();
@@ -36,19 +38,19 @@ function AddForm({ onAdd }) {
   };
 
   const handleTitleBlur = () => {
-    setIsTitleTouched(false);
-  };
-
-  const handleTitleFocus = () => {
     setIsTitleTouched(true);
   };
 
+  const handleTitleFocus = () => {
+    setIsTitleTouched(false);
+  };
+
   const handleDescriptionBlur = () => {
-    setIsDescriptionTouched(false);
+    setIsDescriptionTouched(true);
   };
 
   const handleDescriptionFocus = () => {
-    setIsDescriptionTouched(true);
+    setIsDescriptionTouched(false);
   };
 
   const onSubmit = (e) => {
@@ -56,13 +58,11 @@ function AddForm({ onAdd }) {
     if (isFormValid) {
       onAdd(title.value, description.value);
       clearForm();
-      handleDescriptionFocus();
-      handleTitleFocus();
+      handleDescriptionBlur();
+      handleTitleBlur();
     }
   };
 
-  const errorTitle = !isTitleTouched && titleErrorMessage;
-  const errorDescription = !isDescriptionTouched && descriptionErrorMessage;
   return (
     <div className="add-form-wrapper">
       <form className="add-form" onSubmit={onSubmit}>
@@ -96,7 +96,7 @@ function AddForm({ onAdd }) {
 }
 
 AddForm.defaultProps = {
-  onAdd: PropTypes.func,
+  onAdd: () => {},
 };
 
 AddForm.propTypes = {

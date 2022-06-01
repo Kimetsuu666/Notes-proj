@@ -25,10 +25,10 @@ export function useTextValidation(value, validators, isTouched) {
           return;
         }
       }
+    } else {
+      setErrorMessage("");
     }
-
-    setErrorMessage("");
-  }, [value, validators]);
+  }, [value, validators, isTouched]);
 
   return errorMessage;
 }
