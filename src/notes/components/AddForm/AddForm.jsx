@@ -10,25 +10,22 @@ function AddForm({ onAdd }) {
   const description = useInputValue("");
   const [isTitleTouched, setIsTitleTouched] = useState(false);
   const [isDescriptionTouched, setIsDescriptionTouched] = useState(false);
-  const titleErrorMessage = useTextValidation(
+  const [titleErrorMessage, validateTitle, setTitleError] = useTextValidation(
     title.value,
     validators,
     isTitleTouched
   );
-  const descriptionErrorMessage = useTextValidation(
-    description.value,
-    validators,
-    isDescriptionTouched
-  );
-  const [isFormValid, setIsFormValid] = useState(false);
+  const [descriptionErrorMessage, validateDescription, setDescriptionError] =
+    useTextValidation(description.value, validators, isDescriptionTouched);
+  const [isFormValidFromState, setIsFormValidFromState] = useState(false);
   const errorTitle = Boolean(titleErrorMessage);
   const errorDescription = Boolean(descriptionErrorMessage);
 
   useEffect(() => {
     if (errorTitle || errorDescription) {
-      setIsFormValid(false);
+      setIsFormValidFromState(false);
     } else {
-      setIsFormValid(true);
+      setIsFormValidFromState(true);
     }
   }, [errorTitle, errorDescription]);
 
@@ -55,12 +52,37 @@ function AddForm({ onAdd }) {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    let isFormValid = false;
+
+    if (isTitleTouched && isDescriptionTouched) {
+      isFormValid = isFormValidFromState;
+    } else {
+      if (!isTitleTouched) {
+        const { isValid } = validateTitle(title.value);
+        isFormValid = isValid;
+
+        if (!isValid) {
+          setTitleError(title.value);
+        }
+      }
+
+      if (!isDescriptionTouched) {
+        const { isValid } = validateDescription(description.value);
+        isFormValid = isValid;
+
+        if (!isValid) {
+          setDescriptionError(description.value);
+        }
+      }
+    }
+
     if (isFormValid) {
       onAdd(title.value, description.value);
       clearForm();
-      handleDescriptionBlur();
-      handleTitleBlur();
+      handleDescriptionFocus();
+      handleTitleFocus();
     }
+    return isFormValid;
   };
 
   return (
@@ -87,7 +109,7 @@ function AddForm({ onAdd }) {
           placeholder="Write description..."
         />
         <Error error={errorDescription} errorText={descriptionErrorMessage} />
-        <button disabled={!isFormValid} className="btn" type="submit">
+        <button className="btn" type="submit">
           Add note
         </button>
       </form>
