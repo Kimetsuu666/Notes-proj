@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
 import { useInputValue, useTextValidation } from "../../hooks/hooks";
 import validators from "../../helpers/validators/validators";
+import { generatorId } from "../../helpers/generatorId/generatorId";
+import { addNote } from "../../store/notesActions";
 import Error from "../Error/Error";
 import "./AddForm.scss";
 
-function AddForm({ onAdd }) {
+function AddForm() {
+  const dispatch = useDispatch();
   const title = useInputValue("");
   const description = useInputValue("");
   const [isTitleTouched, setIsTitleTouched] = useState(false);
@@ -50,6 +53,15 @@ function AddForm({ onAdd }) {
     setIsDescriptionTouched(false);
   };
 
+  const onAdd = () => {
+    const newNote = {
+      title: title.value,
+      description: description.value,
+      id: generatorId(),
+    };
+    dispatch(addNote(newNote));
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
     let isFormValid = false;
@@ -77,7 +89,7 @@ function AddForm({ onAdd }) {
     }
 
     if (isFormValid) {
-      onAdd(title.value, description.value);
+      onAdd();
       clearForm();
       handleDescriptionFocus();
       handleTitleFocus();
@@ -110,19 +122,11 @@ function AddForm({ onAdd }) {
         />
         <Error error={errorDescription} errorText={descriptionErrorMessage} />
         <button className="btn" type="submit">
-          Add note
+          Submit
         </button>
       </form>
     </div>
   );
 }
-
-AddForm.defaultProps = {
-  onAdd: () => {},
-};
-
-AddForm.propTypes = {
-  onAdd: PropTypes.func,
-};
 
 export default AddForm;

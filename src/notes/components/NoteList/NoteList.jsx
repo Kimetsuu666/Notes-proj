@@ -1,31 +1,24 @@
 import React from "react";
-import PropTypes from "prop-types";
+import { useDispatch, useSelector } from "react-redux";
 import NoteItem from "../NoteItem/NoteItem";
 import "./NoteList.scss";
+import { deleteNote } from "../../store/notesActions";
 
-function NoteList({ notes, onDelete }) {
+function NoteList() {
+  const dispatch = useDispatch();
+  const notes = useSelector((state) => state.notes);
   const elements = notes.map((item) => {
     const { id } = item;
-    return <NoteItem key={id} note={item} onDelete={() => onDelete(id)} />;
+    return (
+      <NoteItem
+        key={id}
+        note={item}
+        onDelete={() => dispatch(deleteNote(id))}
+      />
+    );
   });
 
   return <div className="notes-wrapper">{elements}</div>;
 }
-
-NoteList.defaultProps = {
-  notes: [],
-  onDelete: () => {},
-};
-
-NoteList.propTypes = {
-  notes: PropTypes.arrayOf(
-    PropTypes.shape({
-      title: PropTypes.string,
-      description: PropTypes.string,
-      id: PropTypes.number,
-    })
-  ),
-  onDelete: PropTypes.func,
-};
 
 export default NoteList;
