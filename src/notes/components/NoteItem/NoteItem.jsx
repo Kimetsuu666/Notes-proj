@@ -36,6 +36,7 @@ function NoteItem(props) {
           className="text"
           cols="30"
           rows="10"
+          maxLength="250"
         />
         <button onClick={onDelete} className="trash" type="button">
           <i className="fas fa-trash" />

@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from "react-redux";
 import NoteItem from "../NoteItem/NoteItem";
 import "./NoteList.scss";
 import { deleteNote } from "../../store/notesActions";
+import { getNotes } from "../../store/selectors";
 
 function NoteList() {
   const dispatch = useDispatch();
-  const notes = useSelector((state) => state.notes);
+  const { notes } = useSelector(getNotes);
   const elements = notes.map((item) => {
     const { id } = item;
     return (
