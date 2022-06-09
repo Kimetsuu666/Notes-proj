@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { useInputValue } from "../../hooks/hooks";
+import useInputValue from "../../hooks/hooks";
 import { updateNote } from "../../store/notesActions";
 import "./NoteItem.scss";
 
