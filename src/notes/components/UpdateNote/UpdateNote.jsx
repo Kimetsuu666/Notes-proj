@@ -1,21 +1,24 @@
 import React from "react";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { v4 as uuid } from "uuid";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { addNote } from "../../store/notesActions";
-import "./AddForm.scss";
+import { getNotes } from "../../store/selectors";
+import { updateNote } from "../../store/notesActions";
 
-function AddForm() {
+function UpdateNote() {
   const dispatch = useDispatch();
+  const { notes } = useSelector(getNotes);
   const navigate = useNavigate();
+  const noteId = useParams().id;
+  const noteData = notes.find((note) => note.id === noteId);
+
   return (
     <div className="add-form-wrapper">
       <Formik
         initialValues={{
-          title: "",
-          description: "",
+          title: noteData.title,
+          description: noteData.description,
         }}
         validationSchema={Yup.object({
           title: Yup.string()
@@ -28,12 +31,12 @@ function AddForm() {
             .required(),
         })}
         onSubmit={(values, { resetForm }) => {
-          const newNote = {
+          const editedNote = {
             title: values.title,
             description: values.description,
-            id: uuid(),
+            id: noteId,
           };
-          dispatch(addNote(newNote));
+          dispatch(updateNote(editedNote));
           resetForm();
           navigate("/notes", { replace: true });
         }}
@@ -57,7 +60,7 @@ function AddForm() {
           />
           <ErrorMessage className="error" name="description" component="div" />
           <button className="btn" type="submit">
-            Submit
+            Edit
           </button>
         </Form>
       </Formik>
@@ -65,4 +68,4 @@ function AddForm() {
   );
 }
 
-export default AddForm;
+export default UpdateNote;

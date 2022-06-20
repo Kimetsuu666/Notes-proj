@@ -1,48 +1,25 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { useDispatch } from "react-redux";
-import useInputValue from "../../hooks/hooks";
-import { updateNote } from "../../store/notesActions";
 import "./NoteItem.scss";
+import { Link } from "react-router-dom";
 
 function NoteItem(props) {
-  const dispatch = useDispatch();
   const { onDelete, note } = props;
-  const title = useInputValue(note.title);
-  const description = useInputValue(note.description);
-
-  const onUpdate = () => {
-    const editedNote = {
-      title: title.value,
-      description: description.value,
-      id: note.id,
-    };
-    dispatch(updateNote(editedNote));
-  };
-
   return (
-    <form className="noteItems">
+    <div className="noteItems">
       <div className="noteItem">
-        <input
-          onChange={title.onChange}
-          onBlur={onUpdate}
-          value={title.value}
-          className="title"
-        />
-        <textarea
-          onChange={description.onChange}
-          onBlur={onUpdate}
-          value={description.value}
-          className="text"
-          cols="30"
-          rows="10"
-          maxLength="250"
-        />
+        <div className="title">{note.title}</div>
+        <div className="text">{note.description}</div>
         <button onClick={onDelete} className="trash" type="button">
           <i className="fas fa-trash" />
         </button>
+        <Link className="link" to={`/notes/${note.id}`}>
+          <button className="edit" type="button">
+            <i className="fa fa-pencil" aria-hidden="true" />
+          </button>
+        </Link>
       </div>
-    </form>
+    </div>
   );
 }
 
