@@ -7,12 +7,14 @@ function NavBar() {
     <nav>
       <NavLink className="nav-link" to="/">
         {({ isActive }) => (
-          <span style={isActive ? { color: "orange" } : null}>Create Note</span>
+          <span className={isActive ? "nav-link-active" : null}>
+            Create Note
+          </span>
         )}
       </NavLink>
       <NavLink className="nav-link" to="/notes">
         {({ isActive }) => (
-          <span style={isActive ? { color: "orange" } : null}>Notes</span>
+          <span className={isActive ? "nav-link-active" : null}>Notes</span>
         )}
       </NavLink>
     </nav>
