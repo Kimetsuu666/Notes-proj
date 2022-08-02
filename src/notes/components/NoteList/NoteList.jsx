@@ -8,6 +8,9 @@ import { getNotes } from "../../store/selectors";
 function NoteList() {
   const dispatch = useDispatch();
   const { notes } = useSelector(getNotes);
+  if (notes.length === 0) {
+    return <h1 className="no-notes">No notes</h1>;
+  }
   const elements = notes.map((item) => {
     const { id } = item;
     return (
